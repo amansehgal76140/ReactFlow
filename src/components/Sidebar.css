@@ -1,0 +1,9 @@
+.module{
+    border: 1px solid blue;
+    border-radius: 4px;
+    margin-top: 20px;
+}
+.pagination{
+    margin-top: 40px;
+}
+
