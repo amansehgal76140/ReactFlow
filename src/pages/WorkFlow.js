@@ -7,10 +7,11 @@ import WorkflowHelper from '../components/WorkflowHelper';
 function WorkFlow() {
 
     const params = useParams();
+    const {id} = params;
     const [selectedModule,setSelectedModule] = useState({});
 
     useEffect(() => {
-        const {id} = params;
+        
         const url = "https://64307b10d4518cfb0e50e555.mockapi.io/workflow/"+id;
         axios.get(url)
         .then((res)=>{
@@ -20,7 +21,7 @@ function WorkFlow() {
         .catch((err)=>{
             console.log(err);
         })
-    }, [])
+    }, []) //eslint-disable-line react-hooks/exhaustive-deps
     
     if(!selectedModule.id)
     return <div>Loading....</div>

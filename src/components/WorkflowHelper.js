@@ -117,7 +117,7 @@ function WorkflowHelper({selectedModule}) {
       };
       setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance,modules]
+    [reactFlowInstance,modules] //eslint-disable-line react-hooks/exhaustive-deps
   );
 
   useEffect(()=>{
@@ -152,40 +152,22 @@ function WorkflowHelper({selectedModule}) {
         }
     })
     setNodes(temp);
-  },[id])
+  },[id]) //eslint-disable-line react-hooks/exhaustive-deps
   
   const handlePageChange = (event,value)=>{
     setPage(value);
   }
 
-   const isFind=(id,node)=>{
-    return id.findIndex((currNode)=>currNode.id === node.id);
+   const isFind=(tempEdges,node)=>{
+    if(node.id === selectedModule.id)
+    return 1;
+    return tempEdges.findIndex((currEdge)=>currEdge.target === node.id);
    }
 
   const onNodesDelete = useCallback(
     (deleted) => {
-        let id=[];
-         deleted.filter((node)=>{
-            const incomers = getIncomers(node, nodes, edges);
-            const outgoers = getOutgoers(node, nodes, edges);
-            if(incomers.length === 0 && outgoers.length > 0)
-            id = [...outgoers];
-        })  
-      const temp = nodes.map((node)=>{
-        if(isFind(id,node) !== -1)
-        return {id: node.id, type: node.type, 
-            data: node.data,
-            position: node.position, 
-            deletable: node.deletable,
-            style:{height:"21px", width:"250px", 
-                  zIndex: 0, 
-                  padding:"0px", 
-                  margin: "0px", 
-                  border:"1px solid red"}}
-        return node;    
-      })
-      setEdges(
-        deleted.reduce((acc, node) => {
+
+        const tempEdges = deleted.reduce((acc, node) => {
           const incomers = getIncomers(node, nodes, edges);
           const outgoers = getOutgoers(node, nodes, edges);
           const connectedEdges = getConnectedEdges([node], edges);
@@ -198,12 +180,25 @@ function WorkflowHelper({selectedModule}) {
 
           return [...remainingEdges, ...createdEdges];
         }, edges)
-        
-      );
-      console.log(temp);
-      setNodes(temp);
+        setEdges(tempEdges);
+        const tempNodes = nodes.map((node)=>{
+            if(isFind(tempEdges,node) !== -1)
+            return node;
+            else if(node.style["border"] === '1px solid red')
+            return node;
+            else
+            return {id: node.id, type: node.type, 
+                data: node.data,
+                position: node.position, 
+                deletable: node.deletable,
+                style: {...NodeStyle,border:"1px solid red"}
+            }
+        })
+        console.log(tempNodes);
+      console.log(tempEdges);
+      setNodes(tempNodes);
     },
-    [nodes, edges]
+    [nodes, edges]  //eslint-disable-line react-hooks/exhaustive-deps
   );
 
   if(modules.length === 0)
