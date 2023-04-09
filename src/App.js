@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/workflow/:id" element={<WorkFlow />} />
-        </Routes>
+      </Routes>
     </div>
   );
 }
