@@ -117,7 +117,7 @@ function WorkflowHelper({selectedModule}) {
       };
       setNodes((nds) => nds.concat(newNode));
     },
-    [reactFlowInstance,modules] //eslint-disable-line react-hooks/exhaustive-deps
+    [reactFlowInstance,modules,nodes] //eslint-disable-line react-hooks/exhaustive-deps
   );
 
   useEffect(()=>{
