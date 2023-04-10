@@ -111,7 +111,7 @@ function WorkflowHelper({selectedModule}) {
         id,
         type: 'default',
         position,
-        data: { label: AddedNode({...module[0],style:{border:"1px solid blue"}}) },
+        data: { label: AddedNode({...module[0],style:{border:"1px solid red"}}), module: module[0] },
         style: {...NodeStyle,border:"1px solid red"},
         deleteable : true
       };
@@ -127,10 +127,11 @@ function WorkflowHelper({selectedModule}) {
   useEffect(()=>{
     if(id === -1 && selectedModule)
     {
+        
         setNodes([{
             id: selectedModule.id,
             type: 'input',
-            data: {label: AddedNode({...selectedModule,style:{border:"1px solid blue"}})},
+            data: {label: AddedNode({...selectedModule,style:{border:"1px solid blue"}}), module: selectedModule},
             style: NodeStyle,
             position: {x: 200, y: 90}
     }]);
@@ -139,13 +140,13 @@ function WorkflowHelper({selectedModule}) {
     console.log(id);
     console.log(nodes);
     const tempNode = nodes.filter((node)=>node.id === id);
-
+    console.log(tempNode[0].data.module)
     const temp = nodes.map((node)=>{
         if(node.id !== id)
         return node;
         else
         return {id: tempNode[0].id, type: tempNode[0].type, 
-            data: tempNode[0].data,
+            data: {label: AddedNode({...tempNode[0].data.module, style:{border:"1px solid blue"} }), module:tempNode[0].data.module},
             position: tempNode[0].position, 
             deletable: tempNode[0].deletable,
             style: NodeStyle
@@ -184,14 +185,15 @@ function WorkflowHelper({selectedModule}) {
         const tempNodes = nodes.map((node)=>{
             if(isFind(tempEdges,node) !== -1)
             return node;
-            else if(node.style["border"] === '1px solid red')
-            return node;
-            else
+
+            else{
+              console.log(node);
             return {id: node.id, type: node.type, 
-                data: node.data,
+                data: {label: AddedNode({...node.data.module,style:{border:"1px solid red"}}), module: node.data.module},
                 position: node.position, 
                 deletable: node.deletable,
                 style: {...NodeStyle,border:"1px solid red"}
+              }
             }
         })
         console.log(tempNodes);

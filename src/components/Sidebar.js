@@ -27,9 +27,11 @@ return (
                 <DisplayModule key={index} module={module} onDragStart={onDragStart} />
             )
         })}   
+        <Box>
         <Stack className="pagination" >
-          <Pagination count={20} page={page} onChange={handlePageChange} />
-        </Stack> 
+          <Pagination count={20} page={page} siblingCount={0} onChange={handlePageChange} />
+        </Stack>
+        </Box> 
         </Box>
     </Paper>
   )
